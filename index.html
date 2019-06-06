@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>API Capstone</title>
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  
+    <header>
+    <h1>Search for Concerts</h1>
+    </header>
+
+    <form>
+        <label for="location">City:</label>
+        <input type="text" required name="location">
+        <label for="start-date">Start Date:</label>
+        <input type="date" name="start-date">
+        <label for="end-date">End Date:</label>
+        <input type="date" name="end-date">
+    </form>
+
+    <section>
+    <ul id="concert-results" class="hidden">
+    </ul>
+    </section>
+
+    <section id="spotify-player">
+        <iframe src="https://open.spotify.com/embed/artist/21mKp7DqtSNHhCAU2ugvUw" 
+        width="300" height="380" frameborder="0" allowtransparency="true" 
+        allow="encrypted-media"></iframe>
+    </section>
+    
+    
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+</body>
+</html>
