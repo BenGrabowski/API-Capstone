@@ -13,3 +13,7 @@ h1 {
 form {
     text-align: center;
 }
+
+#spotify-player {
+    float: right;
+}

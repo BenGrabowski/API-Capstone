@@ -10,7 +10,7 @@ const spotifySearchBase = 'https://api.spotify.com/v1/search';
 //Get metro ID using location API
 function getMetroID(city, startDate, endDate) {
     const params = {
-        apikey = songkickApiKey,
+        // apikey = songkickApiKey,
         q: city
     };
     const queryString = formatParams(params);
@@ -23,7 +23,9 @@ function getMetroID(city, startDate, endDate) {
         } throw new Error(response.statusText)
     })
     .then(responseJson => getConcerts(responseJson.resultsPage.results.location[0].metroArea.id, startDate, endDate))
-    .catch();
+    .catch(error => {
+        $('#error').text(`Something Went Wrong: ${error.message}`);
+    });
 
 }
 
@@ -37,7 +39,7 @@ function getConcerts(metroID, startDate, endDate) {
     };
 
     queryString = formatParams(params);
-    const url = songkickLocationBase + queryString;
+    const url = `https://api.songkick.com/api/3.0/metro_areas/${metroID}/calendar.json?` + queryString;
 
     //call fetch here with url
     fetch(url)
@@ -52,7 +54,7 @@ function getConcerts(metroID, startDate, endDate) {
     });
 }
 
-//Format the songkick params into the query string
+//Format the params into the query string
 function formatParams(params) {
     const queryItems = Object.keys(params)
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
@@ -63,6 +65,13 @@ function displayConcerts(responseJson) {
     $('#concert-results').empty();
     for (let i = 0; i < responseJson.resultspage.results.event.length; i++){
         //create <li> for each concert here
+        $('#concert-results').append(
+            `<li>
+                <p class="artist-name">${responseJson.resultspage.results.event[1][0].displayName}</p>
+                <p class="concert-date">${responseJson.resultspage.results.event[0].start.date}</p>
+                <p class="venue">${responseJson.resultspage.results.event[3].displayName}</p>
+            </li>`
+        );
     };
 }
 
@@ -79,10 +88,9 @@ function getArtistURI(artistName){
         })
     };
 
-   const queryString = formatParams(params);
-   const url = spotifySearchBase + '?' + queryString;
+    const queryString = formatParams(params);
+    const url = spotifySearchBase + '?' + queryString;
 
-    //call fetch here with url & options
     fetch(url, options)
     .then(response => {
         if (response.ok) {
@@ -103,11 +111,16 @@ function getAccessToken(){
         beforeSend: function (xhr) {
             xhr.setRequestHeader ("Authorization", "Basic " + 'NmQwYTNmMmRlYzVhNDY2YjhkODc0NGIwMzc2ZDhlMWY6IDNiZTM1MTM0OThmNjQ0NWVhMDA3Y2FjZWZhM2RmMmNk');
         },
-        data: {grant_type: "client_credentials"}
+        data: {grant_type: client_credentials},
+        error: function(xhr, error) {
+            console.log(error.message);
+        },
+        success: function(data) {
+            let response = data.json();
+            let accessToken = response.access_token;
+            return accessToken;
+        }
     });
-    let responseJs = JSON.parse(response);
-    let accessToken = responseJs.access_token;
-    return accessToken;
 }
 
 function generatePlayer(artistURI){
@@ -125,8 +138,22 @@ function handleSubmit(){
         const startDate = $('input[name=start-date]').val();
         const endDate = $('input[name=end-date]').val();
         getMetroID(city, startDate, endDate);
-        console.log('handleSubmit ran');
     });
 }
 
-$(handleSubmit);
+//event listener for user clicking on artist name
+function handleArtistClick() {
+    $('#concert-results').on('click', '.artist-name', event => {
+        event.preventDefault();
+        let artistName = $('.artist-name').text();
+        console.log(artistName);
+        // getArtistURI(artistName);
+    });
+}
+
+function runApp() {
+    handleSubmit();
+    handleArtistClick();
+}
+
+$(runApp);
