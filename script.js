@@ -9,7 +9,7 @@ const spotifySearchBase = 'https://api.spotify.com/v1/search';
 const spotifyAuthorizeURL = 'https://accounts.spotify.com/authorize';
 
 //Get metro ID using location API
-function getMetroID(city, startDate, endDate) {
+function getMetroID(city, startDate, endDate, maxResults) {
     console.log('getMetroID ran');
     const params = {
         apikey: songkickApiKey,
@@ -25,7 +25,7 @@ function getMetroID(city, startDate, endDate) {
         } throw new Error(response.statusText)
     })
     // .then(responseJson => console.log(responseJson.resultsPage.results.location[0].metroArea.id, startDate, endDate))
-    .then(responseJson => getConcerts(responseJson.resultsPage.results.location[0].metroArea.id, startDate, endDate))
+    .then(responseJson => getConcerts(responseJson.resultsPage.results.location[0].metroArea.id, startDate, endDate, maxResults))
     .catch(error => {
         $('#error').text(`Something Went Wrong: ${error.message}`);
     });
@@ -33,13 +33,14 @@ function getMetroID(city, startDate, endDate) {
 }
 
 //Get list of concerts from Songkick
-function getConcerts(metroID, startDate, endDate) {
+function getConcerts(metroID, startDate, endDate, maxResults) {
     console.log('getConcerts ran');
     console.log(metroID, startDate, endDate);
     const params = {
         apikey: songkickApiKey,
         min_date: startDate,
-        max_date: endDate
+        max_date: endDate,
+        per_page: maxResults
     };
 
     const queryString = formatParams(params);
@@ -54,8 +55,8 @@ function getConcerts(metroID, startDate, endDate) {
             return response.json();
         } throw new Error(response.statusText);
     })
-    .then(responseJson => console.log(responseJson))
-    // .then(responseJson => displayConcerts(responseJson))
+    // .then(responseJson => console.log(responseJson))
+    .then(responseJson => displayConcerts(responseJson))
     .catch(error => {
         $('#error').text(`Something Went Wrong: ${error.message}`);
     });
@@ -70,14 +71,24 @@ function formatParams(params) {
 }
 
 function displayConcerts(responseJson) {
+    console.log('displayConcerts ran');
     $('#concert-results').empty();
-    for (let i = 0; i < responseJson.resultspage.results.event.length; i++){
+    const eventArray = responseJson.resultsPage.results.event;
+    for (let i = 0; i < eventArray.length; i++) {
         //create <li> for each concert here
         $('#concert-results').append(
             `<li>
-                <p class="artist-name">${responseJson.resultspage.results.event[1][0].displayName}</p>
-                <p class="concert-date">${responseJson.resultspage.results.event[0].start.date}</p>
-                <p class="venue">${responseJson.resultspage.results.event[3].displayName}</p>
+                <p class="artist-name" target="_blank">
+                ${responseJson.resultsPage.results.event[i].performance[0].artist.displayName}
+                </p>
+                
+                <p class="concert-date">${responseJson.resultsPage.results.event[i].start.date}</p>
+                
+                <p class="venue">${responseJson.resultsPage.results.event[i].venue.displayName}</p>
+                
+                <a href="${responseJson.resultsPage.results.event[i].uri}" class="songkick-link" target="_blank">
+                SongKick Event
+                </a>
             </li>`
         );
     };
@@ -173,7 +184,8 @@ function handleSubmit(){
         const city = $('input[name=location]').val();
         const startDate = $('input[name=start-date]').val();
         const endDate = $('input[name=end-date]').val();
-        getMetroID(city, startDate, endDate);
+        const maxResults = $('input[name=max-results').val();
+        getMetroID(city, startDate, endDate, maxResults);
     });
 }
 
@@ -181,7 +193,7 @@ function handleSubmit(){
 function handleArtistClick() {
     $('#concert-results').on('click', '.artist-name', event => {
         event.preventDefault();
-        let artistName = $('.artist-name').text();
+        let artistName = $(event.target).text();
         console.log(artistName);
         // getArtistURI(artistName);
     });

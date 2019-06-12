@@ -31,3 +31,7 @@ li {
 #spotify-player {
     float: right;
 }
+
+.songkick-link {
+    font-size: 12px;
+}
