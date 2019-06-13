@@ -26,6 +26,7 @@ input {
 
 li {
     line-height: .7;
+    margin: 30px 0;
 }
 
 #spotify-player {
@@ -34,4 +35,17 @@ li {
 
 .songkick-link {
     font-size: 12px;
+}
+
+.artist-name {
+    font-weight: bold;
+}
+
+.artist-name:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#concert-results {
+    list-style: none;
 }

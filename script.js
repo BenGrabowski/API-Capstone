@@ -104,6 +104,7 @@ function getVideos(artistName) {
         q: artistName,
         type: 'video',
         order: 'relevance',
+        maxResults: '10',
         part: 'snippet'
     };
 
@@ -232,6 +233,7 @@ function generatePlayer(artistURI){
 function handleSubmit(){
     $('#submit').on('click', event => {
         event.preventDefault();
+        $('#youtube-player').empty();
         const city = $('input[name=location]').val();
         const startDate = $('input[name=start-date]').val();
         const endDate = $('input[name=end-date]').val();
