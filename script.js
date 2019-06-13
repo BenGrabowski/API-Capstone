@@ -1,12 +1,14 @@
 'use strict';
 
 const songkickApiKey = 'ZtmmBiNtoDue1K6l';
-const spotifyClientId = '6d0a3f2dec5a466b8d8744b0376d8e1f';
-const spotifyClientSecret = '3be3513498f6445ea007cacefa3df2cd';
+const youtubeApiKey = 'AIzaSyCXmNnQkli4umDw-wWFFsBB2q7KooLVOTY';
+// const spotifyClientId = '6d0a3f2dec5a466b8d8744b0376d8e1f';
+// const spotifyClientSecret = '3be3513498f6445ea007cacefa3df2cd';
 
 const songkickLocationBase = 'https://api.songkick.com/api/3.0/search/locations.json?';
-const spotifySearchBase = 'https://api.spotify.com/v1/search';
-const spotifyAuthorizeURL = 'https://accounts.spotify.com/authorize';
+const youtubeSearchBase = 'https://www.googleapis.com/youtube/v3/search';
+// const spotifySearchBase = 'https://api.spotify.com/v1/search';
+// const spotifyAuthorizeURL = 'https://accounts.spotify.com/authorize';
 
 //Get metro ID using location API
 function getMetroID(city, startDate, endDate, maxResults) {
@@ -92,6 +94,55 @@ function displayConcerts(responseJson) {
             </li>`
         );
     };
+}
+
+//Call the YouTube API to get video ID's
+function getVideos(artistName) {
+    console.log('getVideos ran');
+    const params = {
+        key: youtubeApiKey,
+        q: artistName,
+        type: 'video',
+        order: 'relevance',
+        part: 'snippet'
+    };
+
+    const queryString = formatParams(params);
+    let url = youtubeSearchBase + '?' + queryString;
+    console.log(url);
+
+    fetch(url)
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } throw new Error(response.statusText);
+    })
+    // .then(responseJson => console.log(responseJson))
+    .then(responseJson => getVideoIDs(responseJson))
+    .catch(error => {
+        $('#error').text(`Something Went Wrong: ${error.message}`);
+    });
+}
+
+//Put video ID's into object
+function getVideoIDs(responseJson) {
+    console.log('getvideos ran');
+    const videos = [];
+    for (let i = 0; i < responseJson.items.length; i++) {
+        videos.push(responseJson.items[i].id.videoId);
+    }
+    console.log(videos);
+    const videoString = videos.toString();
+    console.log(videoString);
+    generatePlaylist(videoString);
+}
+
+//Generate YouTube video playlist
+function generatePlaylist(videoString){
+    const playlist = `<iframe width="720" height="405" 
+        src="https://www.youtube.com/embed/VIDEO_ID?playlist=${videoString}" frameborder="0" allowfullscreen>`;
+    
+    $('#youtube-player').append(playlist);
 }
 
 //Call the Spotify Search API to obtain the artist's URI used to generate the player
@@ -193,8 +244,10 @@ function handleSubmit(){
 function handleArtistClick() {
     $('#concert-results').on('click', '.artist-name', event => {
         event.preventDefault();
-        let artistName = $(event.target).text();
+        $('#youtube-player').empty();
+        let artistName = $(event.target).text().trim();
         console.log(artistName);
+        getVideos(artistName);
         // getArtistURI(artistName);
     });
 }
