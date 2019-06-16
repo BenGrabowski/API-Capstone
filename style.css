@@ -44,6 +44,10 @@ li {
 
 #concert-results {
     list-style: none;
+    max-height: 500px;
+    overflow: scroll;
+    border: 1px solid black;
+    padding: 0 20px;
 }
 
 .venue {
@@ -58,3 +62,9 @@ li {
 .venue-id {
     display: none;
 }
+
+.hidden {
+    display: none;
+}
+
+

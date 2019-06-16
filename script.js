@@ -5,7 +5,7 @@ const youtubeApiKey = 'AIzaSyCXmNnQkli4umDw-wWFFsBB2q7KooLVOTY';
 
 const songkickLocationBase = 'https://api.songkick.com/api/3.0/search/locations.json?';
 const youtubeSearchBase = 'https://www.googleapis.com/youtube/v3/search';
-const googlemapsDirectionsBase = 'https://www.google.com/maps/dir/?api=1&destination=';
+// const googlemapsDirectionsBase = 'https://www.google.com/maps/dir/?api=1&destination=';
 const googlemapsEmbedBase = 'https://www.google.com/maps/embed/v1/search?';
 
 //Get metro ID using location API
@@ -24,7 +24,6 @@ function getMetroID(city, startDate, endDate, maxResults) {
             return response.json();
         } throw new Error(response.statusText)
     })
-    // .then(responseJson => console.log(responseJson.resultsPage.results.location[0].metroArea.id, startDate, endDate))
     .then(responseJson => getConcerts(responseJson.resultsPage.results.location[0].metroArea.id, startDate, endDate, maxResults))
     .catch(error => {
         $('#error').text(`Something Went Wrong: ${error.message}`);
@@ -54,7 +53,6 @@ function getConcerts(metroID, startDate, endDate, maxResults) {
             return response.json();
         } throw new Error(response.statusText);
     })
-    // .then(responseJson => console.log(responseJson))
     .then(responseJson => displayConcerts(responseJson))
     .catch(error => {
         $('#error').text(`Something Went Wrong: ${error.message}`);
@@ -84,7 +82,6 @@ function getConcertAddress(venueID) {
             return response.json();
         } throw new Error (response.statusText)
     })
-    // .then(responseJson => console.log(responseJson))
     .then(responseJson => formatAddress(responseJson))
     .catch(error => {
         $('#error').text(`Something Went Wrong: ${error.message}`);
@@ -94,21 +91,21 @@ function getConcertAddress(venueID) {
 function displayConcerts(responseJson) {
     console.log('displayConcerts ran');
     $('#concert-results').empty();
+    $('#concert-results').removeClass('hidden');
+    // let poweredBySK = `<img src="images/powered-by-songkick-black.png" class="powered-by-sk">`
+    // $('#concert-results').prepend(poweredBySK);
     const eventArray = responseJson.resultsPage.results.event;
     for (let i = 0; i < eventArray.length; i++) {
+        const concertDate = moment(responseJson.resultsPage.results.event[i].start.date)
+                            .format('MMMM Do YYYY');
         //create <li> for each concert here
         $('#concert-results').append(
             `<li>
                 <p class="artist-name" target="_blank">
-                ${responseJson.resultsPage.results.event[i].performance[0].artist.displayName}
-                </p>
-                
-                <p class="concert-date">${responseJson.resultsPage.results.event[i].start.date}</p>
-                
+                ${responseJson.resultsPage.results.event[i].performance[0].artist.displayName}</p>
+                <p class="concert-date">${concertDate}</p>
                 <p class="venue">${responseJson.resultsPage.results.event[i].venue.displayName}</p>
-
                 <p class="venue-id">${responseJson.resultsPage.results.event[i].venue.id}</p>
-                
                 <a href="${responseJson.resultsPage.results.event[i].uri}" class="songkick-link" target="_blank">
                 SongKick Event
                 </a>
@@ -179,7 +176,6 @@ function formatAddress(responseJson) {
 
  }
 
-
 function displayMap(fullAddress) {
     const params = {
         key: youtubeApiKey,
@@ -195,12 +191,6 @@ function displayMap(fullAddress) {
         src="${mapsEmbedUrl}" allowfullscreen>
         </iframe>`
     $('#map').append(mapEl);
-}
-
-function formatDestinationParams(venueName) {
-    console.log('formatDestinationParams ran');
-    let queryString = encodeURIComponent(venueName);
-    return queryString;
 }
 
 function handleSubmit(){
@@ -221,10 +211,10 @@ function handleArtistClick() {
     $('#concert-results').on('click', '.artist-name', event => {
         event.preventDefault();
         $('#youtube-player').empty();
+        $('#map').empty();
         let artistName = $(event.target).text().trim();
         console.log(artistName);
         getVideos(artistName);
-        // getArtistURI(artistName);
     });
 }
 
@@ -235,12 +225,7 @@ function handleVenueClick() {
         let venueID = $(event.target).next().text();
         console.log(venueName);
         console.log(venueID);
-        const venueQuery = formatDestinationParams(venueName);
-        const directionsUrl = googlemapsDirectionsBase + venueQuery;
-        // window.open(directionsUrl);
-        // console.log(venueQuery);
         getConcertAddress(venueID);
-        // displayMap(venueQuery);
     });
 }
 
