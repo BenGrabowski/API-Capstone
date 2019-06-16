@@ -2,13 +2,11 @@
 
 const songkickApiKey = 'ZtmmBiNtoDue1K6l';
 const youtubeApiKey = 'AIzaSyCXmNnQkli4umDw-wWFFsBB2q7KooLVOTY';
-// const spotifyClientId = '6d0a3f2dec5a466b8d8744b0376d8e1f';
-// const spotifyClientSecret = '3be3513498f6445ea007cacefa3df2cd';
 
 const songkickLocationBase = 'https://api.songkick.com/api/3.0/search/locations.json?';
 const youtubeSearchBase = 'https://www.googleapis.com/youtube/v3/search';
-// const spotifySearchBase = 'https://api.spotify.com/v1/search';
-// const spotifyAuthorizeURL = 'https://accounts.spotify.com/authorize';
+const googlemapsDirectionsBase = 'https://www.google.com/maps/dir/?api=1&destination=';
+const googlemapsEmbedBase = 'https://www.google.com/maps/embed/v1/search?';
 
 //Get metro ID using location API
 function getMetroID(city, startDate, endDate, maxResults) {
@@ -50,7 +48,6 @@ function getConcerts(metroID, startDate, endDate, maxResults) {
     let url = `https://api.songkick.com/api/3.0/metro_areas/${metroID}/calendar.json?` + queryString;
     console.log(url);
 
-    //call fetch here with url
     fetch(url)
     .then(response => {
         if(response.ok) {
@@ -64,12 +61,34 @@ function getConcerts(metroID, startDate, endDate, maxResults) {
     });
 }
 
-//Format the params into the query string
+//Format params into query string
 function formatParams(params) {
     console.log('formatParams ran');
     const queryItems = Object.keys(params)
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
     return queryItems.join('&');
+}
+
+function getConcertAddress(venueID) {
+    const params = {
+        apikey: songkickApiKey,
+        venue_id: venueID
+    };
+
+    const queryString = formatParams(params);
+    const url = `https://api.songkick.com/api/3.0/venues/${venueID}.json?apikey=${songkickApiKey}`;
+
+    fetch(url)
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } throw new Error (response.statusText)
+    })
+    // .then(responseJson => console.log(responseJson))
+    .then(responseJson => formatAddress(responseJson))
+    .catch(error => {
+        $('#error').text(`Something Went Wrong: ${error.message}`);
+    });
 }
 
 function displayConcerts(responseJson) {
@@ -87,6 +106,8 @@ function displayConcerts(responseJson) {
                 <p class="concert-date">${responseJson.resultsPage.results.event[i].start.date}</p>
                 
                 <p class="venue">${responseJson.resultsPage.results.event[i].venue.displayName}</p>
+
+                <p class="venue-id">${responseJson.resultsPage.results.event[i].venue.id}</p>
                 
                 <a href="${responseJson.resultsPage.results.event[i].uri}" class="songkick-link" target="_blank">
                 SongKick Event
@@ -146,94 +167,47 @@ function generatePlaylist(videoString){
     $('#youtube-player').append(playlist);
 }
 
-//Call the Spotify Search API to obtain the artist's URI used to generate the player
-function getArtistURI(artistName){
-    getAccessToken();
+function formatAddress(responseJson) {
+    const streetAddress = responseJson.resultsPage.results.venue.street;
+    const venueCity = responseJson.resultsPage.results.venue.city.displayName;
+    const venueState = responseJson.resultsPage.results.venue.city.state.displayName;
+    const venueZip = responseJson.resultsPage.results.venue.zip;
+
+    const fullAddress = streetAddress + " " + venueCity + ',' + " " + venueState + " " + venueZip;
+    console.log(fullAddress);
+    displayMap(fullAddress);
+
+ }
+
+
+function displayMap(fullAddress) {
     const params = {
-        q: artistName
-    };
-
-    const options = {
-        headers: new Headers({
-            "Authorization": "Bearer" + accessToken
-        })
-    };
-
-    const queryString = formatParams(params);
-    const url = spotifySearchBase + '?' + queryString;
-
-    fetch(url, options)
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } throw new Error(response.statusText);
-    })
-    .then(responseJson => generatePlayer(responseJson.artists.items.id))
-    .catch(error => {
-        $('#error').text(`Something Went Wrong: ${error.message}`);
-    });
+        key: youtubeApiKey,
+        q: fullAddress
+    }; 
+    
+    const mapsQuery = formatParams(params);
+    const mapsEmbedUrl = googlemapsEmbedBase + mapsQuery;
+    console.log(mapsEmbedUrl);
+    
+    let mapEl = 
+        `<iframe width="600" height="450" frameborder="0" style="border:0"
+        src="${mapsEmbedUrl}" allowfullscreen>
+        </iframe>`
+    $('#map').append(mapEl);
 }
 
-//use client credentials flow to get access_token required for call to Search API
-// function getAccessToken(){
-//     $.ajax({
-//         type: "POST",
-//         url: "https://accounts.spotify.com/api/token",
-//         beforeSend: function(xhr) {
-//             xhr.setRequestHeader("Authorization", "Basic NmQwYTNmMmRlYzVhNDY2YjhkODc0NGIwMzc2ZDhlMWY6M2JlMzUxMzQ5OGY2NDQ1ZWEwMDdjYWNlZmEzZGYyY2Q=");
-//         },
-//         data: {grant_type: 'client_credentials'},
-//         error: function(xhr, error) {
-//             console.log(error.message);
-//         },
-//         success: function(data) {
-//             let response = data.json();
-//             let accessToken = response.access_token;
-//             return accessToken;
-//         }
-//     });
-// }
-
-//alternative version of call for access token
-function getAccessToken(){
-   const url = 'https://accounts.spotify.com/api/token';
-   const data = {
-       'grant_type': 'client_credentials'
-   };
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Basic "NmQwYTNmMmRlYzVhNDY2YjhkODc0NGIwMzc2ZDhlMWY6M2JlMzUxMzQ5OGY2NDQ1ZWEwMDdjYWNlZmEzZGYyY2Q=',
-            // 'Content-Type': 'application/x-www-form-urlencoded'
-            // 'Access-Control-Request-Headers': 'Authorization', 'Content-Type'
-        },
-        body: data
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } throw new Error(response.statusText);
-    })
-    // .then(responseJson => getArtistURI(responseJson))
-    // .then(responseJson => {return responseJson})
-    .then(responseJson => console.log(responseJson))
-    .catch(error => {
-        $('#error').text(`Something went wrong: ${error.message}`);
-    });
-}
-
-function generatePlayer(artistURI){
-    const player = ` <iframe src="https://open.spotify.com/embed/artist/${artistURI}" 
-    width="300" height="380" frameborder="0" allowtransparency="true" 
-    allow="encrypted-media"></iframe>`;
-
-    $('#spotify-player').html(player);
+function formatDestinationParams(venueName) {
+    console.log('formatDestinationParams ran');
+    let queryString = encodeURIComponent(venueName);
+    return queryString;
 }
 
 function handleSubmit(){
     $('#submit').on('click', event => {
         event.preventDefault();
         $('#youtube-player').empty();
+        $('#map').empty();
         const city = $('input[name=location]').val();
         const startDate = $('input[name=start-date]').val();
         const endDate = $('input[name=end-date]').val();
@@ -254,9 +228,26 @@ function handleArtistClick() {
     });
 }
 
+function handleVenueClick() {
+    $('#concert-results').on('click', '.venue', event => {
+        $('#map').empty();
+        let venueName = $(event.target).text();
+        let venueID = $(event.target).next().text();
+        console.log(venueName);
+        console.log(venueID);
+        const venueQuery = formatDestinationParams(venueName);
+        const directionsUrl = googlemapsDirectionsBase + venueQuery;
+        // window.open(directionsUrl);
+        // console.log(venueQuery);
+        getConcertAddress(venueID);
+        // displayMap(venueQuery);
+    });
+}
+
 function runApp() {
     handleSubmit();
     handleArtistClick();
+    handleVenueClick();
 }
 
 $(runApp);

@@ -29,10 +29,6 @@ li {
     margin: 30px 0;
 }
 
-#spotify-player {
-    float: right;
-}
-
 .songkick-link {
     font-size: 12px;
 }
@@ -48,4 +44,17 @@ li {
 
 #concert-results {
     list-style: none;
+}
+
+.venue {
+    font-weight: bold;
+}
+
+.venue:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.venue-id {
+    display: none;
 }
