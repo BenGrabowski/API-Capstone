@@ -9,6 +9,16 @@ body {
     align-items: center;
 }
 
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+}
+
 h1 {
     text-align: center;
 }
@@ -44,7 +54,7 @@ li {
 
 #concert-results {
     list-style: none;
-    max-height: 500px;
+    max-height: 800px;
     overflow: scroll;
     border: 1px solid black;
     padding: 0 20px;

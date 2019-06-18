@@ -13,29 +13,35 @@
     <h1>Search for Concerts</h1>
     </header>
 
-    <form>
-        <label for="location">City:</label>
-        <input type="text" required name="location">
-        <label for="start-date">Start Date:</label>
-        <input type="date" name="start-date" required>
-        <label for="end-date">End Date:</label>
-        <input type="date" name="end-date" required>
-        <label for="max-results">Results</label>
-        <input type="number" name="max-results" value="20" max="50">
-        <input type="submit" id="submit">
-    </form>
+        <form>
+            <label for="location">City:</label>
+            <input type="text" required name="location">
+            <label for="start-date">Start Date:</label>
+            <input type="date" name="start-date" required>
+            <label for="end-date">End Date:</label>
+            <input type="date" name="end-date" required>
+            <label for="max-results">Results</label>
+            <input type="number" name="max-results" value="20" min="1" max="50">
+            <input type="submit" id="submit">
+        </form>
 
-    <p id="error"></p>
+        <p id="error"></p>
 
-    <section>
-    <ul id="concert-results" class="hidden">
-    </ul>
-    </section>
+    <main>
+            
+        <section>
+            <ul id="concert-results" class="hidden">
+            </ul>
+        </section>
+        
+        <div id="content">
+            <section id="youtube-player"></section>
 
-    <section id="youtube-player"></section>
-
-    <section id="map">
-    </section>
+            <section id="map">
+            </section>
+        </div>
+    
+    </main>
        
     <script src="moment.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"

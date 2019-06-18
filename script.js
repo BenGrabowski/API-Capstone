@@ -8,6 +8,9 @@ const youtubeSearchBase = 'https://www.googleapis.com/youtube/v3/search';
 // const googlemapsDirectionsBase = 'https://www.google.com/maps/dir/?api=1&destination=';
 const googlemapsEmbedBase = 'https://www.google.com/maps/embed/v1/search?';
 
+let currentArtist = '';
+let currentVenue = '';
+
 //Get metro ID using location API
 function getMetroID(city, startDate, endDate, maxResults) {
     console.log('getMetroID ran');
@@ -26,9 +29,10 @@ function getMetroID(city, startDate, endDate, maxResults) {
     })
     .then(responseJson => getConcerts(responseJson.resultsPage.results.location[0].metroArea.id, startDate, endDate, maxResults))
     .catch(error => {
-        $('#error').text(`Something Went Wrong: ${error.message}`);
-    });
+        // $('#error').text(`Something Went Wrong: ${error.message}`);
+        $('#error').text(`Please Enter a Valid City`);
 
+    });
 }
 
 //Get list of concerts from Songkick
@@ -158,7 +162,7 @@ function getVideoIDs(responseJson) {
 
 //Generate YouTube video playlist
 function generatePlaylist(videoString){
-    const playlist = `<iframe width="720" height="405" 
+    const playlist = `<iframe width="600" height="337.5" 
         src="https://www.youtube.com/embed/VIDEO_ID?playlist=${videoString}" frameborder="0" allowfullscreen>`;
     
     $('#youtube-player').append(playlist);
@@ -196,12 +200,18 @@ function displayMap(fullAddress) {
 function handleSubmit(){
     $('#submit').on('click', event => {
         event.preventDefault();
-        $('#youtube-player').empty();
-        $('#map').empty();
         const city = $('input[name=location]').val();
         const startDate = $('input[name=start-date]').val();
         const endDate = $('input[name=end-date]').val();
         const maxResults = $('input[name=max-results').val();
+        if (maxResults < 1) {
+            $('#error').text('Please Enter a Positive Number');
+            return;
+        } else {
+            $('#error').empty();
+        }
+        $('#youtube-player').empty();
+        $('#map').empty();
         getMetroID(city, startDate, endDate, maxResults);
     });
 }
@@ -210,11 +220,16 @@ function handleSubmit(){
 function handleArtistClick() {
     $('#concert-results').on('click', '.artist-name', event => {
         event.preventDefault();
+        //if statement so youtube player only empties if it's not for the venue's artist
+        const artistVenue = $(event.target).nextAll('.venue').text().trim();
+        if (artistVenue !== currentVenue) {
+            $('#map').empty();
+        }
         $('#youtube-player').empty();
-        $('#map').empty();
         let artistName = $(event.target).text().trim();
         console.log(artistName);
         getVideos(artistName);
+        currentArtist = artistName;
     });
 }
 
@@ -225,7 +240,13 @@ function handleVenueClick() {
         let venueID = $(event.target).next().text();
         console.log(venueName);
         console.log(venueID);
+        const venueArtist = $(event.target).prevAll('.artist-name').text().trim();
+        console.log(venueArtist);
+        if (venueArtist !== currentArtist) {
+            $('#youtube-player').empty();
+        }
         getConcertAddress(venueID);
+        currentVenue = venueName;
     });
 }
 
