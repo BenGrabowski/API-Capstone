@@ -5,7 +5,6 @@ const youtubeApiKey = 'AIzaSyCXmNnQkli4umDw-wWFFsBB2q7KooLVOTY';
 
 const songkickLocationBase = 'https://api.songkick.com/api/3.0/search/locations.json?';
 const youtubeSearchBase = 'https://www.googleapis.com/youtube/v3/search';
-// const googlemapsDirectionsBase = 'https://www.google.com/maps/dir/?api=1&destination=';
 const googlemapsEmbedBase = 'https://www.google.com/maps/embed/v1/search?';
 
 let currentArtist = '';
@@ -203,7 +202,7 @@ function handleSubmit(){
         const city = $('input[name=location]').val();
         const startDate = $('input[name=start-date]').val();
         const endDate = $('input[name=end-date]').val();
-        const maxResults = $('input[name=max-results').val();
+        const maxResults = $('input[name=max-results]').val();
         if (maxResults < 1) {
             $('#error').text('Please Enter a Positive Number');
             return;
@@ -250,10 +249,15 @@ function handleVenueClick() {
     });
 }
 
+function datePicker() {
+        $('.datepicker').datepicker({dateFormat: 'yy-mm-dd'});
+}
+
 function runApp() {
     handleSubmit();
     handleArtistClick();
     handleVenueClick();
+    datePicker();
 }
 
 $(runApp);
