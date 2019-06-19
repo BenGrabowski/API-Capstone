@@ -200,8 +200,11 @@ function handleSubmit(){
     $('#submit').on('click', event => {
         event.preventDefault();
         const city = $('input[name=location]').val();
-        const startDate = $('input[name=start-date]').val();
-        const endDate = $('input[name=end-date]').val();
+        // const startDate = $('input[name=start-date]').val();
+        const startDate = $('#alt-start-date').val();
+
+        // const endDate = $('input[name=end-date]').val();
+        const endDate = $('#alt-end-date').val();
         const maxResults = $('input[name=max-results]').val();
         if (maxResults < 1) {
             $('#error').text('Please Enter a Positive Number');
@@ -211,6 +214,7 @@ function handleSubmit(){
         }
         $('#youtube-player').empty();
         $('#map').empty();
+        console.log(startDate, endDate);
         getMetroID(city, startDate, endDate, maxResults);
     });
 }
@@ -250,7 +254,17 @@ function handleVenueClick() {
 }
 
 function datePicker() {
-        $('.datepicker').datepicker({dateFormat: 'yy-mm-dd'});
+    $('.datepickerStart').datepicker(
+        {dateFormat: 'mm-dd-yy',
+         altField: '#alt-start-date',
+         altFormat: 'yy-mm-dd'
+    });
+
+    $('.datepickerEnd').datepicker(
+        {dateFormat: 'mm-dd-yy',
+         altField: '#alt-end-date',
+         altFormat: 'yy-mm-dd'
+    });
 }
 
 function runApp() {
