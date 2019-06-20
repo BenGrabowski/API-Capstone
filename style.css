@@ -60,12 +60,23 @@ li {
     padding: 0 20px;
 }
 
+#cities {
+    list-style: none;
+    max-height: 200px;
+    overflow: scroll;
+    border: 1px solid black;
+}
+
 .venue {
     font-weight: bold;
 }
 
 .venue:hover {
     text-decoration: underline;
+    cursor: pointer;
+}
+
+.city-name:hover {
     cursor: pointer;
 }
 

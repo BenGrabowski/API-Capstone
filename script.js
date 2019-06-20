@@ -9,9 +9,12 @@ const googlemapsEmbedBase = 'https://www.google.com/maps/embed/v1/search?';
 
 let currentArtist = '';
 let currentVenue = '';
+let startDate = '';
+let endDate = '';
+let maxResults = '';
 
 //Get metro ID using location API
-function getMetroID(city, startDate, endDate, maxResults) {
+function getMetroID(city) {
     console.log('getMetroID ran');
     const params = {
         apikey: songkickApiKey,
@@ -26,7 +29,8 @@ function getMetroID(city, startDate, endDate, maxResults) {
             return response.json();
         } throw new Error(response.statusText)
     })
-    .then(responseJson => getConcerts(responseJson.resultsPage.results.location[0].metroArea.id, startDate, endDate, maxResults))
+    .then(responseJson => displayCities(responseJson))
+    // .then(responseJson => getConcerts(responseJson.resultsPage.results.location[0].metroArea.id, startDate, endDate, maxResults))
     .catch(error => {
         // $('#error').text(`Something Went Wrong: ${error.message}`);
         $('#error').text(`Please Enter a Valid City`);
@@ -34,8 +38,29 @@ function getMetroID(city, startDate, endDate, maxResults) {
     });
 }
 
+function displayCities(responseJson) {
+    $('#cities').removeClass('hidden');
+    const cityArray = responseJson.resultsPage.results.location;
+    for (let i = 0; i < cityArray.length; i++) {
+        if (cityArray[i].city.country.displayName === 'US') {
+            $('#cities').append(
+                `<li>
+                    <p class="city-name">${cityArray[i].city.displayName}, 
+                    ${cityArray[i].metroArea.state.displayName}</p>
+                    <p class="metroAreaID hidden">${cityArray[i].metroArea.id}</p>
+                </li>`);
+        } else {
+            $('#cities').append(
+                `<li>
+                    <p class="city-name">${cityArray[i].city.displayName}, ${cityArray[i].city.country.displayName}</p>
+                    <p class="metroAreaID hidden">${cityArray[i].metroArea.id}</p>
+                </li>`);
+        }
+    }
+}
+
 //Get list of concerts from Songkick
-function getConcerts(metroID, startDate, endDate, maxResults) {
+function getConcerts(metroID) {
     console.log('getConcerts ran');
     console.log(metroID, startDate, endDate);
     const params = {
@@ -58,7 +83,7 @@ function getConcerts(metroID, startDate, endDate, maxResults) {
     })
     .then(responseJson => displayConcerts(responseJson))
     .catch(error => {
-        $('#error').text(`Something Went Wrong: ${error.message}`);
+        $('#error').text(`Something Went Wrong: No Concerts in this Area`);
     });
 }
 
@@ -201,11 +226,10 @@ function handleSubmit(){
         event.preventDefault();
         const city = $('input[name=location]').val();
         // const startDate = $('input[name=start-date]').val();
-        const startDate = $('#alt-start-date').val();
-
+        startDate = $('#alt-start-date').val();
         // const endDate = $('input[name=end-date]').val();
-        const endDate = $('#alt-end-date').val();
-        const maxResults = $('input[name=max-results]').val();
+        endDate = $('#alt-end-date').val();
+        maxResults = $('input[name=max-results]').val();
         if (maxResults < 1) {
             $('#error').text('Please Enter a Positive Number');
             return;
@@ -214,8 +238,19 @@ function handleSubmit(){
         }
         $('#youtube-player').empty();
         $('#map').empty();
+        $('#cities').empty();
         console.log(startDate, endDate);
-        getMetroID(city, startDate, endDate, maxResults);
+        getMetroID(city);
+    });
+}
+
+function handleCityClick(startDate, endDate, maxResults){
+    $('#cities').on('click', '.city-name', event => {
+        // $('#cities').empty();
+        $('#cities').addClass('hidden');
+        // $('#cities').text($(event.target).text());
+        const metroID = $(event.target).nextAll('.metroAreaID').text();
+        getConcerts(metroID);
     });
 }
 
@@ -271,6 +306,7 @@ function runApp() {
     handleSubmit();
     handleArtistClick();
     handleVenueClick();
+    handleCityClick();
     datePicker();
 }
 
