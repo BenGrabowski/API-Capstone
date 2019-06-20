@@ -238,6 +238,7 @@ function handleSubmit(){
         }
         $('#youtube-player').empty();
         $('#map').empty();
+        $('#cities').empty();
         console.log(startDate, endDate);
         getMetroID(city);
     });
