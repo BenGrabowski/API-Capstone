@@ -60,6 +60,12 @@ li {
     padding: 0 20px;
 }
 
+#cities {
+    list-style: none;
+    max-height: 200px;
+    overflow: scroll;
+}
+
 .venue {
     font-weight: bold;
 }
