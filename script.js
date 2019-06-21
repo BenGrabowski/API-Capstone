@@ -45,14 +45,14 @@ function displayCities(responseJson) {
         if (cityArray[i].city.country.displayName === 'US') {
             $('#cities').append(
                 `<li>
-                    <p class="city-name">${cityArray[i].city.displayName}, 
+                    <p class="city-name" tabindex="0">${cityArray[i].city.displayName}, 
                     ${cityArray[i].metroArea.state.displayName}</p>
                     <p class="metroAreaID hidden">${cityArray[i].metroArea.id}</p>
                 </li>`);
         } else {
             $('#cities').append(
                 `<li>
-                    <p class="city-name">${cityArray[i].city.displayName}, ${cityArray[i].city.country.displayName}</p>
+                    <p class="city-name" tabindex="0">${cityArray[i].city.displayName}, ${cityArray[i].city.country.displayName}</p>
                     <p class="metroAreaID hidden">${cityArray[i].metroArea.id}</p>
                 </li>`);
         }

@@ -6,10 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>API Capstone</title>
     <link href="normalize.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Fugaz+One|Open+Sans&display=swap" rel="stylesheet">    <!-- <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet"> -->
     <link href="style.css" rel="stylesheet" type="text/css">
-    <link href="jquery-ui/jquery-ui.css" rel="stylesheet">
-    <link href="jquery-ui/jquery-ui.structure.css" rel="stylesheet">
-    <link href="jquery-ui/jquery-ui.theme.css" rel="stylesheet">
+    <link href="jquery-ui-custom/jquery-ui.css" rel="stylesheet">
+    <link href="jquery-ui-custom/jquery-ui.structure.css" rel="stylesheet">
+    <link href="jquery-ui-custom/jquery-ui.theme.css" rel="stylesheet">
 </head>
 <body>
   
@@ -21,15 +22,17 @@
         <form>
             <label for="location">City:</label>
             <input type="text" required name="location">
-            
-            <label for="start-date">Start Date:</label>
-            <input type="text" class="datepickerStart" required name="start-date">
-            <input type="text" id="alt-start-date" class="hidden">
            
-            <label for="end-date">End Date:</label>
-            <input type="text" class="datepickerEnd" required name="end-date">
-            <input type="text" id="alt-end-date" class="hidden">
+            <div id="dates"></div>
+                <label for="start-date">Start Date:</label>
+                <input type="text" class="datepickerStart" required name="start-date">
+                <input type="text" id="alt-start-date" class="hidden">
             
+                <label for="end-date">End Date:</label>
+                <input type="text" class="datepickerEnd" required name="end-date">
+                <input type="text" id="alt-end-date" class="hidden">
+            </div>  
+        
             <label for="max-results">Results</label>
             <input type="number" name="max-results" value="20" min="1" max="50">
             
@@ -68,7 +71,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"
             integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
             crossorigin="anonymous"></script>
-    <script src="jquery-ui/jquery-ui.js"></script>
+    <script src="jquery-ui-custom/jquery-ui.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
