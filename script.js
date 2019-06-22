@@ -30,9 +30,7 @@ function getMetroID(city) {
         } throw new Error(response.statusText)
     })
     .then(responseJson => displayCities(responseJson))
-    // .then(responseJson => getConcerts(responseJson.resultsPage.results.location[0].metroArea.id, startDate, endDate, maxResults))
     .catch(error => {
-        // $('#error').text(`Something Went Wrong: ${error.message}`);
         $('#error').text(`Please Enter a Valid City`);
 
     });
@@ -120,13 +118,12 @@ function displayConcerts(responseJson) {
     console.log('displayConcerts ran');
     $('#concert-results').empty();
     $('#concert-results').removeClass('hidden');
-    // let poweredBySK = `<img src="images/powered-by-songkick-black.png" class="powered-by-sk">`
-    // $('#concert-results').prepend(poweredBySK);
+    let poweredBySK = `<img src="images/powered-by-songkick-white.png" class="powered-by-sk">`
+    $('#concert-results').prepend(poweredBySK);
     const eventArray = responseJson.resultsPage.results.event;
     for (let i = 0; i < eventArray.length; i++) {
         const concertDate = moment(responseJson.resultsPage.results.event[i].start.date)
                             .format('MMMM Do YYYY');
-        //create <li> for each concert here
         $('#concert-results').append(
             `<li>
                 <p class="artist-name" target="_blank" tabindex="0">
@@ -164,7 +161,6 @@ function getVideos(artistName) {
             return response.json();
         } throw new Error(response.statusText);
     })
-    // .then(responseJson => console.log(responseJson))
     .then(responseJson => getVideoIDs(responseJson))
     .catch(error => {
         $('#error').text(`Something Went Wrong: ${error.message}`);
@@ -245,9 +241,7 @@ function handleSubmit(){
 
 function handleCityClick(startDate, endDate, maxResults){
     $('#cities').on('click keypress', '.city-name', event => {
-        // $('#cities').empty();
         $('#cities').addClass('hidden');
-        // $('#cities').text($(event.target).text());
         const metroID = $(event.target).nextAll('.metroAreaID').text();
         getConcerts(metroID);
     });
