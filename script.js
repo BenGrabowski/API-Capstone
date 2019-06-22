@@ -129,10 +129,10 @@ function displayConcerts(responseJson) {
         //create <li> for each concert here
         $('#concert-results').append(
             `<li>
-                <p class="artist-name" target="_blank">
+                <p class="artist-name" target="_blank" tabindex="0">
                 ${responseJson.resultsPage.results.event[i].performance[0].artist.displayName}</p>
                 <p class="concert-date">${concertDate}</p>
-                <p class="venue">${responseJson.resultsPage.results.event[i].venue.displayName}</p>
+                <p class="venue" tabindex="0">${responseJson.resultsPage.results.event[i].venue.displayName}</p>
                 <p class="venue-id">${responseJson.resultsPage.results.event[i].venue.id}</p>
                 <a href="${responseJson.resultsPage.results.event[i].uri}" class="songkick-link" target="_blank">
                 SongKick Event
@@ -225,9 +225,7 @@ function handleSubmit(){
     $('#submit').on('click', event => {
         event.preventDefault();
         const city = $('input[name=location]').val();
-        // const startDate = $('input[name=start-date]').val();
         startDate = $('#alt-start-date').val();
-        // const endDate = $('input[name=end-date]').val();
         endDate = $('#alt-end-date').val();
         maxResults = $('input[name=max-results]').val();
         if (maxResults < 1) {
@@ -236,6 +234,7 @@ function handleSubmit(){
         } else {
             $('#error').empty();
         }
+        $('#description').hide();
         $('#youtube-player').empty();
         $('#map').empty();
         $('#cities').empty();
@@ -245,7 +244,7 @@ function handleSubmit(){
 }
 
 function handleCityClick(startDate, endDate, maxResults){
-    $('#cities').on('click', '.city-name', event => {
+    $('#cities').on('click keypress', '.city-name', event => {
         // $('#cities').empty();
         $('#cities').addClass('hidden');
         // $('#cities').text($(event.target).text());
@@ -256,7 +255,7 @@ function handleCityClick(startDate, endDate, maxResults){
 
 //event listener for user clicking on artist name
 function handleArtistClick() {
-    $('#concert-results').on('click', '.artist-name', event => {
+    $('#concert-results').on('click keypress', '.artist-name', event => {
         event.preventDefault();
         //if statement so youtube player only empties if it's not for the venue's artist
         const artistVenue = $(event.target).nextAll('.venue').text().trim();
@@ -272,7 +271,7 @@ function handleArtistClick() {
 }
 
 function handleVenueClick() {
-    $('#concert-results').on('click', '.venue', event => {
+    $('#concert-results').on('click keypress', '.venue', event => {
         $('#map').empty();
         let venueName = $(event.target).text();
         let venueID = $(event.target).next().text();

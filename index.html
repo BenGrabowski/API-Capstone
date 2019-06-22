@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>API Capstone</title>
+    <meta name="description" 
+    content="Web app that allows users to search for concerts in a given city and 
+    access youtube videos and maps of the venue">
+    <title>Go 2 Show</title>
     <link href="normalize.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Fugaz+One|Open+Sans&display=swap" rel="stylesheet">    <!-- <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Fugaz+One|Open+Sans&display=swap" rel="stylesheet">    
     <link href="style.css" rel="stylesheet" type="text/css">
     <link href="jquery-ui-custom/jquery-ui.css" rel="stylesheet">
     <link href="jquery-ui-custom/jquery-ui.structure.css" rel="stylesheet">
@@ -14,16 +17,15 @@
 </head>
 <body>
   
-    <header>
-    <h1>Go 2 Show</h1>
-    <h2></h2>
-    </header>
+    <!-- <div class="home-wrapper"> -->
+        <header>
+        <h1>Go 2 Show</h1>
+        </header>
 
         <form>
             <label for="location">City:</label>
             <input type="text" required name="location">
            
-            <div id="dates"></div>
                 <label for="start-date">Start Date:</label>
                 <input type="text" class="datepickerStart" required name="start-date">
                 <input type="text" id="alt-start-date" class="hidden">
@@ -31,7 +33,6 @@
                 <label for="end-date">End Date:</label>
                 <input type="text" class="datepickerEnd" required name="end-date">
                 <input type="text" id="alt-end-date" class="hidden">
-            </div>  
         
             <label for="max-results">Results</label>
             <input type="number" name="max-results" value="20" min="1" max="50">
@@ -40,6 +41,20 @@
         </form>
 
         <p id="error"></p>
+
+        <section id="description">
+            <p id="instruction-header">User Guide:</p>
+
+            <p>Enter a city, start date, & end date to see a list
+                of concerts in that area.</p>
+
+            <p>Click an artist's name to generate a YouTube playlist</p> 
+                
+            <p>Click on a venue to display a map of the area</p>
+
+            <p>Click the "SongKick Event" button to go to the event's page on SongKick to purchase tickets.</p>
+        </section>
+        <!-- </div> -->
 
         <section>
                 <ul id="cities" class="hidden">
