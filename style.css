@@ -274,8 +274,12 @@ ul::-webkit-scrollbar-corner {
         max-height: 300px;
     }
 
-    body {
+    html {
         min-height: 950px;
+    }
+    
+    body {
+        /* min-height: 950px; */
         height: 100%;
     }
 
