@@ -126,7 +126,7 @@ function displayConcerts(responseJson) {
                             .format('MMMM Do YYYY');
         $('#concert-results').append(
             `<li>
-                <p class="artist-name" target="_blank" tabindex="0">
+                <p class="artist-name" tabindex="0">
                 ${responseJson.resultsPage.results.event[i].performance[0].artist.displayName}</p>
                 <p class="concert-date">${concertDate}</p>
                 <p class="venue" tabindex="0">${responseJson.resultsPage.results.event[i].venue.displayName}</p>
@@ -234,6 +234,8 @@ function handleSubmit(){
         $('#youtube-player').empty();
         $('#map').empty();
         $('#cities').empty();
+        //atempt at logo transition
+        $('h1').toggleClass('transform');
         console.log(startDate, endDate);
         getMetroID(city);
     });

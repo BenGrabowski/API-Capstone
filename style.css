@@ -31,14 +31,14 @@ main {
 }
 
 #description {
-    max-width: 500px;
+    /* max-width: 500px; */
     background: rgba(0, 0, 0, .85);
-    background-blend-mode: lighten;
     color: white;
-    padding: 0 20px 10px 20px;
+    padding: 0 40px 20px 40px;
     line-height: 1.7;
     border-radius: 10px;
     font-size: 20px;
+    margin: 0 30px;
 }
 
 #instruction-header {
@@ -59,13 +59,18 @@ main {
     margin-bottom: 15px;
 }
 
-h1 {
+.logo {
     text-align: center;
     border: 12px solid rgb(75, 75, 75);
     padding: 8px;
     font-size: 65px;
     color: rgb(75, 75, 75);
     font-family: 'Fugaz One', cursive;
+    transition: all 1s ease;
+}
+
+.transform {
+   font-size: 38px;
 }
 
 form {
@@ -163,7 +168,7 @@ a.songkick-link:hover {
 }
 
 .powered-by-sk {
-    width: 130px;
+    width: 110px;
     margin-top: 10px;
 }
 
@@ -267,6 +272,11 @@ ul::-webkit-scrollbar-corner {
 
     #concert-results {
         max-height: 300px;
+    }
+
+    body {
+        min-height: 950px;
+        height: 100%;
     }
 
 }
