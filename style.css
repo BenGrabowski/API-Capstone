@@ -31,7 +31,6 @@ main {
 }
 
 #description {
-    /* max-width: 500px; */
     background: rgba(0, 0, 0, .85);
     color: white;
     padding: 0 40px 20px 40px;
@@ -67,6 +66,10 @@ main {
     color: rgb(75, 75, 75);
     font-family: 'Fugaz One', cursive;
     transition: all 1s ease;
+}
+
+.logo:hover {
+    cursor: pointer;
 }
 
 .transform {
@@ -235,7 +238,7 @@ a.songkick-link:hover {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 ul::-webkit-scrollbar {

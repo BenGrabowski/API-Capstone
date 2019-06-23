@@ -15,7 +15,6 @@ let maxResults = '';
 
 //Get metro ID using location API
 function getMetroID(city) {
-    console.log('getMetroID ran');
     const params = {
         apikey: songkickApiKey,
         query: city
@@ -32,7 +31,7 @@ function getMetroID(city) {
     .then(responseJson => displayCities(responseJson))
     .catch(error => {
         $('#error').text(`Please Enter a Valid City`);
-
+        $('#cities').hide();
     });
 }
 
@@ -59,8 +58,6 @@ function displayCities(responseJson) {
 
 //Get list of concerts from Songkick
 function getConcerts(metroID) {
-    console.log('getConcerts ran');
-    console.log(metroID, startDate, endDate);
     const params = {
         apikey: songkickApiKey,
         min_date: startDate,
@@ -69,9 +66,7 @@ function getConcerts(metroID) {
     };
 
     const queryString = formatParams(params);
-    console.log(queryString);
     let url = `https://api.songkick.com/api/3.0/metro_areas/${metroID}/calendar.json?` + queryString;
-    console.log(url);
 
     fetch(url)
     .then(response => {
@@ -81,13 +76,16 @@ function getConcerts(metroID) {
     })
     .then(responseJson => displayConcerts(responseJson))
     .catch(error => {
+        if ($('.datepickerstart').val() == null) {
+            $('#error').text(`Please enter a valid start & end date`);
+        } else {
         $('#error').text(`Something Went Wrong: No Concerts in this Area`);
+        }
     });
 }
 
 //Format params into query string
 function formatParams(params) {
-    console.log('formatParams ran');
     const queryItems = Object.keys(params)
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
     return queryItems.join('&');
@@ -115,7 +113,6 @@ function getConcertAddress(venueID) {
 }
 
 function displayConcerts(responseJson) {
-    console.log('displayConcerts ran');
     $('#concert-results').empty();
     $('#concert-results').removeClass('hidden');
     let poweredBySK = `<img src="images/powered-by-songkick-white.png" class="powered-by-sk">`
@@ -141,7 +138,6 @@ function displayConcerts(responseJson) {
 
 //Call the YouTube API to get video ID's
 function getVideos(artistName) {
-    console.log('getVideos ran');
     const params = {
         key: youtubeApiKey,
         q: artistName,
@@ -153,7 +149,6 @@ function getVideos(artistName) {
 
     const queryString = formatParams(params);
     let url = youtubeSearchBase + '?' + queryString;
-    console.log(url);
 
     fetch(url)
     .then(response => {
@@ -169,14 +164,11 @@ function getVideos(artistName) {
 
 //Put video ID's into object
 function getVideoIDs(responseJson) {
-    console.log('getvideos ran');
     const videos = [];
     for (let i = 0; i < responseJson.items.length; i++) {
         videos.push(responseJson.items[i].id.videoId);
     }
-    console.log(videos);
     const videoString = videos.toString();
-    console.log(videoString);
     generatePlaylist(videoString);
 }
 
@@ -195,7 +187,6 @@ function formatAddress(responseJson) {
     const venueZip = responseJson.resultsPage.results.venue.zip;
 
     const fullAddress = streetAddress + " " + venueCity + ',' + " " + venueState + " " + venueZip;
-    console.log(fullAddress);
     displayMap(fullAddress);
 
  }
@@ -208,7 +199,6 @@ function displayMap(fullAddress) {
     
     const mapsQuery = formatParams(params);
     const mapsEmbedUrl = googlemapsEmbedBase + mapsQuery;
-    console.log(mapsEmbedUrl);
     
     let mapEl = 
         `<iframe width="600" height="337.5" frameborder="0" style="border:0"
@@ -230,13 +220,13 @@ function handleSubmit(){
         } else {
             $('#error').empty();
         }
+        $('#cities').show();
+        $('#concert-results').hide();
         $('#description').hide();
         $('#youtube-player').empty();
         $('#map').empty();
         $('#cities').empty();
-        //atempt at logo transition
-        $('h1').toggleClass('transform');
-        console.log(startDate, endDate);
+        $('h1').addClass('transform');
         getMetroID(city);
     });
 }
@@ -246,6 +236,7 @@ function handleCityClick(startDate, endDate, maxResults){
         $('#cities').addClass('hidden');
         const metroID = $(event.target).nextAll('.metroAreaID').text();
         getConcerts(metroID);
+        $('#concert-results').show();
     });
 }
 
@@ -260,7 +251,6 @@ function handleArtistClick() {
         }
         $('#youtube-player').empty();
         let artistName = $(event.target).text().trim();
-        console.log(artistName);
         getVideos(artistName);
         currentArtist = artistName;
     });
@@ -271,15 +261,24 @@ function handleVenueClick() {
         $('#map').empty();
         let venueName = $(event.target).text();
         let venueID = $(event.target).next().text();
-        console.log(venueName);
-        console.log(venueID);
         const venueArtist = $(event.target).prevAll('.artist-name').text().trim();
-        console.log(venueArtist);
         if (venueArtist !== currentArtist) {
             $('#youtube-player').empty();
         }
         getConcertAddress(venueID);
         currentVenue = venueName;
+    });
+}
+
+function handleLogoClick() {
+    $('.logo').on('click', event => {
+        $('#description').show();
+        $('#error').empty();
+        $('#concert-results').hide();
+        $('#youtube-player').empty();
+        $('#map').empty();
+        $('#cities').hide();
+        $('h1').removeClass('transform');
     });
 }
 
@@ -302,6 +301,7 @@ function runApp() {
     handleArtistClick();
     handleVenueClick();
     handleCityClick();
+    handleLogoClick();
     datePicker();
 }
 
