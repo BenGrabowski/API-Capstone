@@ -115,12 +115,13 @@ function getConcertAddress(venueID) {
 function displayConcerts(responseJson) {
     $('#concert-results').empty();
     $('#concert-results').removeClass('hidden');
-    let poweredBySK = `<img src="images/powered-by-songkick-white.png" class="powered-by-sk">`
+    const poweredBySK = `<img src="images/powered-by-songkick-white.png" class="powered-by-sk">`
     $('#concert-results').prepend(poweredBySK);
     const eventArray = responseJson.resultsPage.results.event;
     for (let i = 0; i < eventArray.length; i++) {
+        //Use moment.js to format the concert date to "Month Day Year" format
         const concertDate = moment(responseJson.resultsPage.results.event[i].start.date)
-                            .format('MMMM Do YYYY');
+        .format('MMMM Do YYYY');
         $('#concert-results').append(
             `<li>
                 <p class="artist-name" tabindex="0">
@@ -214,8 +215,8 @@ function handleSubmit(){
         startDate = $('#alt-start-date').val();
         endDate = $('#alt-end-date').val();
         maxResults = $('input[name=max-results]').val();
-        if (maxResults < 1) {
-            $('#error').text('Please Enter a Positive Number');
+        if (maxResults < 1 || maxResults > 50) {
+            $('#error').text('Please Enter a Number 1 - 50');
             return;
         } else {
             $('#error').empty();

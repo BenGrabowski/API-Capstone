@@ -31,19 +31,21 @@ main {
 }
 
 #description {
-    background: rgba(0, 0, 0, .85);
+    /* background: rgba(0, 0, 0, .85); */
+    background: rgb(35, 35, 35);
     color: white;
     padding: 0 40px 20px 40px;
     line-height: 1.7;
-    border-radius: 10px;
-    font-size: 20px;
+    /* border-radius: 10px; */
+    font-size: 16px;
     margin: 0 30px;
+    max-width: 650px;
 }
 
 #instruction-header {
     text-align: center;
     font-size: 32px;
-    text-decoration: underline;
+    /* text-decoration: underline; */
     font-family: 'Fugaz One', cursive;
     margin-top: 15px;
     margin-bottom: 0;
@@ -65,7 +67,7 @@ main {
     font-size: 65px;
     color: rgb(75, 75, 75);
     font-family: 'Fugaz One', cursive;
-    transition: all 1s ease;
+    transition: all .5s ease;
 }
 
 .logo:hover {
@@ -97,6 +99,7 @@ input {
     transition-property: background, color;
     transition-duration: .15s;
     transition-timing-function: linear;
+    border-radius: 7px;
 }
 
 input:hover {
