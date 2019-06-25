@@ -113,6 +113,7 @@ function getConcertAddress(venueID) {
 }
 
 function displayConcerts(responseJson) {
+    $('main').removeClass('space-evenly');
     $('#concert-results').empty();
     $('#concert-results').removeClass('hidden');
     const poweredBySK = `<img src="images/powered-by-songkick-white.png" class="powered-by-sk">`
@@ -177,7 +178,7 @@ function getVideoIDs(responseJson) {
 function generatePlaylist(videoString){
     const playlist = `<iframe width="600" height="337.5" 
         src="https://www.youtube.com/embed/VIDEO_ID?playlist=${videoString}" frameborder="0" allowfullscreen>`;
-    
+    $('main').addClass('space-evenly');
     $('#youtube-player').append(playlist);
 }
 

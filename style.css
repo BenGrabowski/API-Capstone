@@ -6,6 +6,7 @@ html {
     background: url(images/background-8.jpg) no-repeat center center fixed;
     background-size: cover;
     height: 100%;
+    min-height: 950px;
 }
 
 body {
@@ -25,31 +26,24 @@ main {
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     margin-bottom: 25px;
 }
 
 #description {
-    /* background: rgba(0, 0, 0, .85); */
     background: rgb(35, 35, 35);
     color: white;
     padding: 0 40px 20px 40px;
     line-height: 1.7;
-    /* border-radius: 10px; */
     font-size: 16px;
     margin: 0 30px;
     max-width: 650px;
 }
 
-/* #spacer {
-    height: 1px;
-} */
-
 #instruction-header {
     text-align: center;
     font-size: 32px;
-    /* text-decoration: underline; */
     font-family: 'Fugaz One', cursive;
     margin-top: 15px;
     margin-bottom: 0;
@@ -81,13 +75,6 @@ main {
 .transform {
    font-size: 38px;
 }
-
-/* form {
-    text-align: center;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-} */
 
 label {
     font-size: 18px;
@@ -255,6 +242,10 @@ a.songkick-link:hover {
     display: none !important;
 }
 
+.space-evenly {
+    justify-content: space-evenly !important; 
+}
+
 ul::-webkit-scrollbar {
     background: rgba(255, 255, 255, 0);
     width: 7px;
@@ -279,37 +270,20 @@ ul::-webkit-scrollbar-corner {
         flex-direction: column;
     }
 
-    /* form {
-        flex-direction: column;
-    } */
-
     #form-wrapper {
         flex-direction: column;
     }
 
-}
-
-  @media screen and (max-width: 950px) {
-
     #concert-results {
         max-height: 300px;
-    }
 
-    html {
-        min-height: 950px;
     }
-    
-    body {
-        /* min-height: 950px; */
-        height: 100%;
-    }
-
 }
 
 @media screen and (max-width: 650px) {
 
     #concert-results, iframe {
-        width: 300px;
+        max-width: 300px;
     }
 
     #concert-results {
@@ -319,12 +293,9 @@ ul::-webkit-scrollbar-corner {
 }
 
 @media screen and (max-width: 550px) {
-
+   
     #description {
         width: 300px;
         font-size: 16px;
     }
-
-
 }
-
