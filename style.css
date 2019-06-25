@@ -42,6 +42,10 @@ main {
     max-width: 650px;
 }
 
+/* #spacer {
+    height: 1px;
+} */
+
 #instruction-header {
     text-align: center;
     font-size: 32px;
@@ -78,12 +82,12 @@ main {
    font-size: 38px;
 }
 
-form {
+/* form {
     text-align: center;
     display: flex;
     flex-direction: row;
     align-items: center;
-}
+} */
 
 label {
     font-size: 18px;
@@ -100,6 +104,13 @@ input {
     transition-duration: .15s;
     transition-timing-function: linear;
     border-radius: 7px;
+}
+
+#form-wrapper {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 input:hover {
@@ -268,7 +279,11 @@ ul::-webkit-scrollbar-corner {
         flex-direction: column;
     }
 
-    form {
+    /* form {
+        flex-direction: column;
+    } */
+
+    #form-wrapper {
         flex-direction: column;
     }
 
@@ -312,3 +327,4 @@ ul::-webkit-scrollbar-corner {
 
 
 }
+
