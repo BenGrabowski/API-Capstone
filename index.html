@@ -17,49 +17,49 @@
 </head>
 <body>
   
-        <header>
+    <header>
         <h1 class="logo">Go 2 Show</h1>
-        </header>
+    </header>
 
-        <form>
+    <form>
         <div id="form-wrapper">
             <label for="location">City:</label>
             <input type="text" required name="location">
            
-                <label for="start-date">Start Date:</label>
-                <input type="text" class="datepickerStart" required name="start-date">
-                <input type="text" id="alt-start-date" class="hidden">
+            <label for="start-date">Start Date:</label>
+            <input type="text" class="datepickerStart" required name="start-date">
+            <input type="text" id="alt-start-date" class="hidden">
             
-                <label for="end-date">End Date:</label>
-                <input type="text" class="datepickerEnd" required name="end-date">
-                <input type="text" id="alt-end-date" class="hidden">
+            <label for="end-date">End Date:</label>
+            <input type="text" class="datepickerEnd" required name="end-date">
+            <input type="text" id="alt-end-date" class="hidden">
         
             <label for="max-results">Results</label>
             <input type="number" name="max-results" value="20" min="1" max="50">
             
             <input type="submit" id="submit">
         </div>
-        </form>
+    </form>
 
-        <p id="error"></p>
+    <p id="error"></p>
 
-        <section id="description">
-            <p id="instruction-header">User Guide</p>
+    <section id="description">
+        <p id="instruction-header">User Guide</p>
 
-            <p>Enter a city, start date, & end date to see a list
+        <p>Enter a city, start date, & end date to see a list
                 of concerts</p>
 
-            <p>Click an artist's name to generate a YouTube playlist</p> 
+        <p>Click an artist's name to generate a YouTube playlist</p> 
                 
-            <p>Click on a venue to display a map of the area</p>
+        <p>Click on a venue to display a map of the area</p>
 
-            <p>Click the "SongKick Event" button to go to the event's page on SongKick to purchase tickets</p>
-        </section>
+        <p>Click the "SongKick Event" button to go to the event's page on SongKick to purchase tickets</p>
+    </section>
 
-        <section>
-                <ul id="cities" class="hidden">
-                </ul>
-            </section>
+    <section>
+        <ul id="cities" class="hidden">
+        </ul>
+    </section>
     
     <main>       
         <section>
