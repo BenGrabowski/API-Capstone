@@ -21,7 +21,7 @@
         <h1 class="logo">Go 2 Show</h1>
     </header>
 
-    <form>
+    <form role="form">
         <div id="form-wrapper">
             <label for="location">City:</label>
             <input type="text" required name="location">
@@ -43,26 +43,26 @@
 
     <p id="error"></p>
 
-    <section id="description">
+    <section id="description" role="document">
         <p id="instruction-header">User Guide</p>
 
-        <p>Enter a city, start date, & end date to see a list
+        <p class="orange">Enter a city, start date, & end date to see a list
                 of concerts</p>
 
-        <p>Click an artist's name to generate a YouTube playlist</p> 
+        <p class="light-blue">Click an artist's name to generate a YouTube playlist</p> 
                 
-        <p>Click on a venue to display a map of the area</p>
+        <p class="orange">Click on a venue to display a map of the area</p>
 
-        <p>Click the "SongKick Event" button to go to the event's page on SongKick to purchase tickets</p>
+        <p class="light-blue">Click the "SongKick Event" button to go to the event's page on SongKick to purchase tickets</p>
     </section>
 
     <section>
-        <ul id="cities" class="hidden">
+        <ul id="cities" class="hidden" role="list">
         </ul>
     </section>
     
     <main>       
-        <section>
+        <section role="list">
             <ul id="concert-results" class="hidden">
             </ul>
         </section>

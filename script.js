@@ -116,7 +116,7 @@ function displayConcerts(responseJson) {
     $('main').removeClass('space-evenly');
     $('#concert-results').empty();
     $('#concert-results').removeClass('hidden');
-    const poweredBySK = `<img src="images/powered-by-songkick-white.png" class="powered-by-sk">`
+const poweredBySK = `<img src="images/powered-by-songkick-white.png" alt="powered by songkick" class="powered-by-sk">`
     $('#concert-results').prepend(poweredBySK);
     const eventArray = responseJson.resultsPage.results.event;
     for (let i = 0; i < eventArray.length; i++) {
