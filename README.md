@@ -13,10 +13,10 @@ Technology Used:
 - jQuery
 
 ### Home Screen
-![Home Screen](images/Home-Screen.png)
+![Home Screen](images/Home-Screen.jpg)
 
 ### Concert Results
-![Concert Results Screen](images/Concert-Results.png)
+![Concert Results Screen](images/Concert-Results.jpg)
 
 ### Concerts with YouTube Player and Google Map
-![Results with YouTube Player and Google Map](images/Results-YouTube-Map.png)
+![Results with YouTube Player and Google Map](images/Results-YouTube-Map.jpg)
