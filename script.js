@@ -1,7 +1,8 @@
 'use strict';
 
 const songkickApiKey = 'ZtmmBiNtoDue1K6l';
-const youtubeApiKey = 'AIzaSyCXmNnQkli4umDw-wWFFsBB2q7KooLVOTY';
+// const youtubeApiKey = 'AIzaSyCXmNnQkli4umDw-wWFFsBB2q7KooLVOTY';
+const youtubeApiKey = 'AIzaSyCh2yjZZt0KY2UyLjoDvW-rBpdcVjrlrfA';
 
 const songkickLocationBase = 'https://api.songkick.com/api/3.0/search/locations.json?';
 const youtubeSearchBase = 'https://www.googleapis.com/youtube/v3/search';
